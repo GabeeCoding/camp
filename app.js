@@ -3,30 +3,27 @@ const got = require("got")
 
 const app = express()
 
-const Url = new URL("http://gabrob.synology.me")
-
 app.use(require("cookie-parser")())
-
-app.get("/", (req, resp, next) => {
-	let port = req.query.port
-	let cookie = req.cookies.port
-	console.log(cookie)
-	if(!port && !cookie){
-		//if there is no port
-		//check cookies
-		console.log("No port or cookies")
-		resp.status(400).end();
-	}
-	got({
-		method: 'get',
-		url: "http://gabrob.synology.me:" + req.query.port + req.pathname,
+const url = "http://gabrob.synology.me:"
+app.use("/:port", (req, resp) => {
+	//get port
+	////use port in url to forward requestttt
+	let port = req.params.port
+	let endpoints = req.originalUrl.split("/");
+	endpoints.shift();
+	endpoints.shift();
+	console.log(port)
+	let endpoint = `/${endpoints.join("/")}`
+	let reqUrl = url + port + endpoint
+	got(reqUrl, {
+		headers: req.headers,
+		method: req.method,
 	}).then(response => {
-	//	console.log(response)
-		resp.send(response.body).end()
-	})
+		resp.send(response.body)
+	}).catch(e => console.log(e))
 })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 2000
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`)
 })
