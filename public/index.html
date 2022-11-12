@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CAMP PROXY</title>
+	</head>
+	<body>
+		<h1>CAMP Proxy</h1>
+		<input type="text" id="i" />
+		<script>
+			const i = document.getElementById("i")
+			function that(){
+				//
+				let v = i.value
+				let endpoint = `${window.location.origin}/${v}`
+				window.location = endpoint
+			}
+		</script>
+		<button onclick="that()">GO</button>
+	</body>
+</html>
