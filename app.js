@@ -1,15 +1,39 @@
 const express = require("express")
 const got = require("got")
-
+const request = require("request")
+require("dotenv").config()
 const app = express()
 
+const portsToQuery = process.env.PORTLISTS.split(",")
+console.log(portsToQuery)
+
 app.use(express.static("public"));
-app.use(require("cookie-parser")())
+//app.use(express.json())
+//app.use(require("body-parser").json())
 const url = "http://gabrob.synology.me:"
+
+app.get("/portlist", (req, resp, next) => {
+	let list = {}
+	portsToQuery.forEach((port) => {
+		let x = url + port
+		got(x).then(response => {
+			let html = response.body
+			let start = html.indexOf("<title>")
+			let titleAndEnd = html.slice(start + 7)
+			let end = titleAndEnd.indexOf("</title>")
+			let text = titleAndEnd.slice(0, end)
+			list[port] = text
+			let length = Object.keys(list).length
+			if(length === portsToQuery.length){
+				resp.json(list).end()
+			}
+		})
+	})
+})
+
 app.use("/:port", (req, resp) => {
 	//get port
 	////use port in url to forward requestttti
-	console.log(req.originalUrl)
 	let port = req.params.port
 	let endpoints = req.originalUrl.split("/");
 	endpoints.shift();
@@ -24,7 +48,6 @@ app.use("/:port", (req, resp) => {
 			split.shift();
 			split.shift();
 			split.shift();
-			console.log(split[0])
 			port = split[0]
 			let endpointsAlt = req.originalUrl.split("/")
 			endpointsAlt.shift();
@@ -38,6 +61,21 @@ app.use("/:port", (req, resp) => {
 		let endpoint = `/${endpoints.join("/")}`
 		reqUrl = url + port + endpoint
 	}
+	console.log("reqUrl", reqUrl, "port", port, "endpoints", endpoints, "parsedPort", parsedPort, "referer", referrer)
+	if(port === ""){
+		resp.status(400).end();
+		return
+	}
+	//rem queries
+	/*
+	console.log(reqUrl.endsWith("?"))
+	if(reqUrl.includes("?")){
+		let split = reqUrl.split("?")
+		split.pop();
+		reqUrl = split.join("")
+	}
+	*/
+	/*
 	got(reqUrl, {
 		headers: req.headers,
 		method: req.method,
@@ -59,6 +97,23 @@ app.use("/:port", (req, resp) => {
 		}
 		resp.send(response.body)
 	}).catch(e => console.log(e))
+	*/
+	/*	
+	if(req.method !== "GET"){
+		let x = request({method: req.method, uri: reqUrl})
+		req.pipe(x).pipe(resp)
+	} else {
+		let stream = got.stream(reqUrl, {throwHttpErrors: true})
+		stream.once("error", (e) => console.log(e))
+		stream.pipe(resp)
+	}
+	*/
+	try {
+	let x = request({method: req.method, uri: reqUrl})
+	req.pipe(x).pipe(resp)
+	} catch(e) {
+		console.log(e)
+	}
 })
 
 const PORT = process.env.PORT || 3000

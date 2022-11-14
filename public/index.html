@@ -2,10 +2,12 @@
 <html>
 	<head>
 		<title>CAMP PROXY</title>
+		<link rel="stylesheet" href="./campsitestyle.css" />
 	</head>
 	<body>
 		<h1>CAMP Proxy</h1>
-		<input type="text" id="i" />
+		<input type="text" id="i" style="width: 80vw; height: 4.6vh; font-size: 100%;" />
+		<button onclick="that()" style="width: 15.9vw; height: 4.6vh;">GO</button>
 		<script>
 			const i = document.getElementById("i")
 			function that(){
@@ -14,7 +16,21 @@
 				let endpoint = `${window.location.origin}/${v}`
 				window.location = endpoint
 			}
+			let portListEndpoint = window.location.origin + "/portlist"
+			fetch(portListEndpoint).then(resp => resp.json().then(json => {
+				//got json of the uhhh endpoints
+				//now
+				let html = ""
+				Object.keys(json).forEach(key => {
+					let value = json[key]
+					console.log(key, value)
+					html += `<li><a href="/${key}">${value} [${key}]</li>`
+				})
+				document.getElementById("list").innerHTML = html
+			}))
 		</script>
-		<button onclick="that()">GO</button>
+		<h1>The list of sites</h1>
+		<ul id="list"></ul>
+		<a href="news.html">Check out the news page</a>
 	</body>
 </html>
