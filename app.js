@@ -27,6 +27,12 @@ app.get("/portlist", (req, resp, next) => {
 			if(length === portsToQuery.length){
 				resp.json(list).end()
 			}
+		}).catch(e => {
+			list[port] = "(Unreachable)"
+			let length = Object.keys(list).length
+			if(length === portsToQuery.length){
+				resp.json(list)
+			}
 		})
 	})
 })
@@ -108,12 +114,19 @@ app.use("/:port", (req, resp) => {
 		stream.pipe(resp)
 	}
 	*/
-	try {
 	let x = request({method: req.method, uri: reqUrl})
-	req.pipe(x).pipe(resp)
-	} catch(e) {
+	x.on("error", (e) => {
+		console.log("Request error!")
 		console.log(e)
-	}
+
+	})
+	let reqPipeResult = req.pipe(x)
+	reqPipeResult.on("error", (e) => {
+		console.log("Pipe error!")
+		console.log(e)
+
+	})
+	reqPipeResult.pipe(resp)
 })
 
 const PORT = process.env.PORT || 3000
