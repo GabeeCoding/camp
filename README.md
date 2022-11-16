@@ -1,7 +1,7 @@
 # CAMP Proxy
 
 ### What is CAMP?
-Since my school blocks any ports except for 80 and 443, I made this app. In order to access something hosted on port 3000 you would go to the endpoint /3000 and it takes you there
+Since my school blocks any ports except for 80 and 443, I made this app. In order to access something hosted on port 3000 you would go to the endpoint /3000 and it takes you there. It also loads /everything/else/not/just/the/home/page
 
 ### How does it work?
 It works by getting the port number from the URL and then adding it on to a base url (process.env.URL). If there is no port number in the url it tries to get it from the Referer http header. Then, it streams a request to the internal url which looks something like this:
