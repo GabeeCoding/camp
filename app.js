@@ -11,7 +11,7 @@ console.log(portsToQuery)
 app.use(express.static("public"));
 //app.use(express.json())
 //app.use(require("body-parser").json())
-const url = "http://gabrob.synology.me:"
+const url = process.env.URL
 
 app.get("/portlist", (req, resp, next) => {
 	let list = {}
