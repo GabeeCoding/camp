@@ -26,4 +26,4 @@ or
 node app.js
 ```
 
-If you need any more information on how this app works message me
+If you need any more information on how this app works message me. PRs welcome
