@@ -3,6 +3,7 @@ const got = require("got")
 const request = require("request")
 require("dotenv").config()
 const app = express()
+const PORT = process.env.PORT || 3000
 
 const portsToQuery = process.env.PORTLISTS.split(",")
 console.log(portsToQuery)
@@ -72,6 +73,12 @@ app.use("/:port", (req, resp) => {
 		resp.status(400).end();
 		return
 	}
+	if(port === PORT){
+		resp.status(400).end();
+		//patch recursion
+		//this shouldnt be a feature anyway
+		return
+	}
 	//rem queries
 	/*
 	console.log(reqUrl.endsWith("?"))
@@ -129,7 +136,6 @@ app.use("/:port", (req, resp) => {
 	reqPipeResult.pipe(resp)
 })
 
-const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`)
 })
