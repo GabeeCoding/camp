@@ -10,4 +10,20 @@ http://my.cool.site:3000/
 ```
 and then sends the response back to the client.
 
+### Setup guide
+Make sure you duplicate .env.example and name it .env and fill out the values
+
+Install dependencies:
+```
+npm i
+```
+Run the app:
+```
+npm start
+```
+or
+```
+node app.js
+```
+
 If you need any more information on how this app works message me
