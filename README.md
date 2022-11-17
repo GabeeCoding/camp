@@ -25,5 +25,14 @@ or
 ```
 node app.js
 ```
+### Set up a temporary banner
+To set up a banner, create a file called `banner.html` in the root of the repo. Whats inside this file will be embedded to the top of the home page. The template for a banner looks like this:
+```html
+<div class="banner warning">
+    <p>This is a yellow banner</p>
+    <button>Close</button>
+</div>
+```
+To change the banner colour to red, replace the `warning` class with `error`. The button element will automatically be set up to close the banner on click.
 
 If you need any more information on how this app works message me. PRs welcome
