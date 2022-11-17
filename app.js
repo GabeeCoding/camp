@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000
 const portsToQuery = process.env.PORTLISTS.split(",")
 console.log(portsToQuery)
 
+const portBlacklist = process.env.BLACKLIST.split(",")
+
 app.use(express.static("public"));
 //app.use(express.json())
 //app.use(require("body-parser").json())
@@ -77,6 +79,10 @@ app.use("/:port", (req, resp) => {
 		resp.status(400).end();
 		//patch recursion
 		//this shouldnt be a feature anyway
+		return
+	}
+	if(portBlacklist.includes(port.toString())){
+		resp.status(403).end();
 		return
 	}
 	//rem queries
