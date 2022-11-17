@@ -8,3 +8,55 @@
 body {
 	font-size: 19px;
 }
+
+.nopadding {
+	padding: 0
+}
+
+.nomargin {
+	margin: 0
+}
+
+.banner {
+	width: 100vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	background-color: rgb(255, 49, 49);
+	align-items: center;
+	text-align: center;
+}
+
+.banner * {
+	background-color: inherit;
+	/* color: rgb(70,70,70); */
+}
+
+.banner p {
+	flex: 0.1;
+	white-space: nowrap;
+}
+
+.banner button {
+	background-color: inherit;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: inherit;
+}
+
+.warning {
+	background-color: #e2b714;
+}
+
+.warning * {
+	color: rgb(70,70,70);
+}
+
+.error {
+	background-color: rgb(255, 49, 49);
+}
+
+.error * {
+	color: white
+}

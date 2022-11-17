@@ -1,6 +1,7 @@
 const express = require("express")
 const got = require("got")
 const request = require("request")
+const fs = require("fs")
 require("dotenv").config()
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -14,6 +15,15 @@ app.use(express.static("public"));
 //app.use(express.json())
 //app.use(require("body-parser").json())
 const url = process.env.URL
+
+app.get("/campbanner", (req, resp) => {
+	if(fs.existsSync("banner.html")){
+		let stream = fs.createReadStream("banner.html")
+		stream.pipe(resp)
+	} else {
+		resp.send("")
+	}	
+})
 
 app.get("/portlist", (req, resp, next) => {
 	let list = {}

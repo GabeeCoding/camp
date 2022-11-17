@@ -4,15 +4,12 @@
 		<title>CAMP PROXY</title>
 		<link rel="stylesheet" href="./campsitestyle.css" />
 	</head>
-	<body>
+	<body class="nopadding nomargin">
 		<h1>CAMP Proxy</h1>
 		<input type="text" id="i" style="width: 80vw; height: 4.6vh; font-size: 100%;" />
-		<button onclick="that()" style="width: 15.9vw; height: 4.6vh;">GO</button>
+		<button onclick="go(document.querySelector('input').value)" style="width: 15.9vw; height: 4.6vh;">GO</button>
 		<script>
-			const i = document.getElementById("i")
-			function that(){
-				//
-				let v = i.value
+			function go(v){
 				let endpoint = `${window.location.origin}/${v}`
 				window.location = endpoint
 			}
@@ -28,6 +25,19 @@
 				})
 				document.getElementById("list").innerHTML = html
 			}))
+			let bannerEndpoint = window.location.origin + "/campbanner"
+			let body = document.querySelector("body")
+			fetch(bannerEndpoint).then(resp => {
+				resp.text().then(txt => {
+					body.innerHTML = txt + body.innerHTML		
+					let x = document.querySelector(".banner button")
+					if(x !== null){
+						x.addEventListener("click", () => {
+							x.parentElement.style.display = "none"
+						})
+					}
+				})
+			})
 		</script>
 		<h1>The list of sites</h1>
 		<ul id="list"></ul>
