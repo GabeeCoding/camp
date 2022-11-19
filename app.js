@@ -12,7 +12,6 @@ console.log(portsToQuery)
 const portBlacklist = process.env.BLACKLIST.split(",")
 
 app.use(express.static("public"));
-//app.use(express.json())
 const url = process.env.URL
 
 app.get("/campbanner", (req, resp) => {
