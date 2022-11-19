@@ -13,7 +13,6 @@ const portBlacklist = process.env.BLACKLIST.split(",")
 
 app.use(express.static("public"));
 //app.use(express.json())
-//app.use(require("body-parser").json())
 const url = process.env.URL
 
 app.get("/campbanner", (req, resp) => {
@@ -108,7 +107,6 @@ app.use("/:port", (req, resp) => {
 	}
 	if(port === PORT){
 		resp.status(400).end();
-		//patch recursion
 		//this shouldnt be a feature anyway
 		return
 	}
@@ -116,48 +114,6 @@ app.use("/:port", (req, resp) => {
 		resp.status(403).end();
 		return
 	}
-	//rem queries
-	/*
-	console.log(reqUrl.endsWith("?"))
-	if(reqUrl.includes("?")){
-		let split = reqUrl.split("?")
-		split.pop();
-		reqUrl = split.join("")
-	}
-	*/
-	/*
-	got(reqUrl, {
-		headers: req.headers,
-		method: req.method,
-	}).then(response => {
-		let ct = response.headers["content-type"]
-		if(ct){
-			resp.set("Content-Type", ct)
-		} else {
-			//no content type
-			//guess by file name
-			if(req.originalUrl.includes(".mp3")){
-				resp.set("Content-Type", "audio/mpeg")
-			} else if(req.originalUrl.includes(".json")){
-				resp.set("Content-Type", "application/json")
-			} else {
-				resp.status(404).end()
-				return;
-			}
-		}
-		resp.send(response.body)
-	}).catch(e => console.log(e))
-	*/
-	/*	
-	if(req.method !== "GET"){
-		let x = request({method: req.method, uri: reqUrl})
-		req.pipe(x).pipe(resp)
-	} else {
-		let stream = got.stream(reqUrl, {throwHttpErrors: true})
-		stream.once("error", (e) => console.log(e))
-		stream.pipe(resp)
-	}
-	*/
 	let x = request({method: req.method, uri: reqUrl})
 	x.on("error", (e) => {
 		console.log("Request error!")
