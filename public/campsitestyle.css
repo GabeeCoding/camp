@@ -60,3 +60,19 @@ body {
 .error * {
 	color: white
 }
+
+.success {
+	background-color: rgb(38, 164, 38);
+}
+
+.success * {
+	color: white;
+}
+
+.info {
+	background-color: blue;
+}
+
+.info * {
+	color: white;
+}
