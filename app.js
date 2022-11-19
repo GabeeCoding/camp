@@ -68,9 +68,30 @@ app.use("/:port", (req, resp) => {
 			split.shift();
 			split.shift();
 			port = split[0]
-			let endpointsAlt = req.originalUrl.split("/")
-			endpointsAlt.shift();
-			reqUrl = url + port + "/" + endpointsAlt.join("/")
+			console.log(port, parseInt(port))
+			console.log(referrer.includes(":") && !isNaN(parseInt(port)))
+			if(referrer.includes(":") && !isNaN(parseInt(port))){
+				let endpointsAlt = req.originalUrl.split("/")
+				endpointsAlt.shift();
+				reqUrl = url + port + "/" + endpointsAlt.join("/")
+			} else {
+				/*
+				//find through regex
+				let r = /\d{4}/i;
+				let result = r.exec(referrer)
+				console.log(result, referrer)
+				if(!isNaN(parseInt(result))){
+					console.log("that worked")
+					port = result
+				} else {
+					//no more stuff
+					resp.status(404).end()
+					return
+				}
+				*/
+				resp.status(404).end();
+				return
+			}
 		} else {
 			//referrer is null
 			resp.status(404).end();
