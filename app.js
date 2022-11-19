@@ -11,7 +11,16 @@ console.log(portsToQuery)
 
 const portBlacklist = process.env.BLACKLIST.split(",")
 
+app.use((req, resp, next) => {
+	if(req.originalUrl === "/"){
+		resp.clearCookie("port")
+	}
+	next()
+})
+
 app.use(express.static("public"));
+app.use(require("cookie-parser")())
+
 const url = process.env.URL
 
 app.get("/campbanner", (req, resp) => {
@@ -77,18 +86,21 @@ app.use("/:port", (req, resp) => {
 				//find through regex
 				let r = /\d{4}/i;
 				let result = r.exec(referrer)
-				console.log(result, referrer)
-				if(!isNaN(parseInt(result))){
-					console.log("that worked")
-					port = result
+				if(result && !isNaN(parseInt(result[0]))){
+				if(false){
+					console.log("Port set to ", result[0], " from referer")
+					port = result[0]
 				} else {
-					//no more stuff
-					resp.status(404).end()
-					return
-				}
 				*/
-				resp.status(404).end();
-				return
+					let cookie = req.cookies.port
+					if(cookie){
+						port = cookie
+						reqUrl = url + port + req.originalUrl
+					} else {
+						resp.status(404).end()
+						return
+					}
+				//}
 			}
 		} else {
 			//referrer is null
@@ -113,6 +125,8 @@ app.use("/:port", (req, resp) => {
 		resp.status(403).end();
 		return
 	}
+	//set cookie
+	resp.cookie("port", port.toString())
 	let x = request({method: req.method, uri: reqUrl})
 	x.on("error", (e) => {
 		console.log("Request error!")
