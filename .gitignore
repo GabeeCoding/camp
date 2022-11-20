@@ -3,3 +3,6 @@ node_modules/
 start.sh
 public/news.html
 banner.html
+
+.DS_Store
+@eaDir
