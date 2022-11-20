@@ -131,13 +131,13 @@ app.use("/:port", (req, resp) => {
 	x.on("error", (e) => {
 		console.log("Request error!")
 		console.log(e)
-
+		resp.status(500).end()
 	})
 	let reqPipeResult = req.pipe(x)
 	reqPipeResult.on("error", (e) => {
 		console.log("Pipe error!")
 		console.log(e)
-
+		resp.status(500).end()
 	})
 	reqPipeResult.pipe(resp)
 })
