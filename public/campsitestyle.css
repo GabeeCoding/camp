@@ -32,11 +32,6 @@ body {
 	/* color: rgb(70,70,70); */
 }
 
-.banner p {
-	flex: 0.1;
-	white-space: nowrap;
-}
-
 .banner button {
 	background-color: inherit;
 	border: none;
