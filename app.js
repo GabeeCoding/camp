@@ -21,7 +21,7 @@ app.use((req, resp, next) => {
 app.use(express.static("public"));
 app.use(require("cookie-parser")())
 
-const url = process.env.URL
+const url = process.env.URL + ":"
 
 app.get("/campbanner", (req, resp) => {
 	if(fs.existsSync("banner.html")){
