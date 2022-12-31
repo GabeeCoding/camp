@@ -6,11 +6,10 @@ require("dotenv").config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
-const portsToQuery = process.env.PORTLISTS.split(",")
+const portsToQuery = process.env.PORTLISTS ? process.env.PORTLISTS.split(",") : []
 console.log(portsToQuery)
 
-const portBlacklist = process.env.BLACKLIST.split(",")
-
+const portBlacklist = process.env.BLACKLIST ? process.env.BLACKLIST.split(",") : []
 app.use((req, resp, next) => {
 	if(req.originalUrl === "/"){
 		resp.clearCookie("port")
@@ -21,6 +20,11 @@ app.use((req, resp, next) => {
 app.use(express.static("public"));
 app.use(require("cookie-parser")())
 
+if(!process.env.URL){
+	console.log("Missing URL env variable")
+	console.log("You need to specify a URL to proxy to")
+	process.exit(1)
+}
 const url = process.env.URL + ":"
 
 app.get("/campbanner", (req, resp) => {
